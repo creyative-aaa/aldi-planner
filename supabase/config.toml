@@ -1,0 +1,4 @@
+project_id = "aldi-planner"
+
+[functions.process-calendar]
+verify_jwt = false

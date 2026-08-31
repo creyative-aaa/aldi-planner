@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><script>(function(w,i,g){w[g]=w[g]||[];if(typeof w[g].push=='function')w[g].push(i)})
+(window,'GTM-K3QN3TWK','google_tags_first_party');</script><script>(function(w,d,s,l){w[l]=w[l]||[];(function(){w[l].push(arguments);})('set', 'developer_id.dY2E1Nz', true);
+		var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s);j.async=true;j.src='/gk7x/';
+		f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aldi Planner — Perencana Kalender Akademik Multi-Kampus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+<style>
+  :root{
+    --bg:#F2EBDD;
+    --bg-grain:radial-gradient(rgba(40,30,15,0.04) 1px,transparent 1px);
+    --surface:#FBF6E9;
+    --surface-2:#F7F0DE;
+    --ink:#1F2230;
+    --ink-soft:#3A3D4A;
+    --ink-mute:#6B6F7A;
+    --line:#D9CFB4;
+    --line-soft:#E8DFC7;
+    --forest:#2D4A3E;
+    --forest-deep:#1E3329;
+    --copper:#B8693D;
+    --ochre:#C0914A;
+    --bronze:#8C6A3F;
+    --warn:#A8431F;
+    --good:#3F6A4B;
+    --shadow:0 1px 0 rgba(31,34,48,0.04),0 8px 24px -12px rgba(31,34,48,0.18);
+    --radius:6px;
+    --radius-sm:3px;
+    --campus-color:#2D4A3E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:var(--bg);
+    background-image:var(--bg-grain);
+    background-size:3px 3px;
+    color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono',monospace}
+  header.topbar{
+    background:var(--surface);border-bottom:1px solid var(--line);
+    padding:14px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:50;
+  }
+  .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+  .brand-mark{
+    width:34px;height:34px;border-radius:50%;background:var(--forest);
+    display:inline-flex;align-items:center;justify-content:center;
+    color:var(--surface);font-family:'Fraunces',serif;font-weight:700;font-size:18px;
+    box-shadow:inset 0 -3px 0 rgba(0,0,0,0.2);
+  }
+  .brand-title{font-family:'Fraunces',serif;font-weight:600;font-size:20px;font-variation-settings:"opsz" 144}
+  .brand-sub{font-size:10px;color:var(--ink-mute);letter-spacing:0.08em;text-transform:uppercase}
+  .campus-tabs{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .campus-tab{
+    padding:6px 12px;border-radius:99px;background:var(--surface-2);
+    border:1px solid var(--line);font-size:12px;font-weight:500;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft);
+  }
+  .campus-tab:hover{border-color:var(--campus-color)}
+  .campus-tab.active{background:var(--campus-color);color:#FBF6E9;border-color:var(--campus-color)}
+  .campus-tab .dot{width:8px;height:8px;border-radius:50%;background:var(--campus-color)}
+  .campus-tab.active .dot{background:#FBF6E9}
+  .campus-tab .x{opacity:0.5;font-size:10px;padding-left:4px;cursor:pointer}
+  .campus-tab .x:hover{opacity:1}
+  .app{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 64px)}
+  .sidebar{
+    background:var(--surface);border-right:1px solid var(--line);
+    padding:24px 22px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;
+  }
+  .campus-header{
+    background:linear-gradient(135deg,var(--campus-color) 0%, color-mix(in srgb, var(--campus-color) 70%, #000) 100%);
+    color:#FBF6E9;padding:14px 16px;border-radius:var(--radius);margin-bottom:18px;box-shadow:var(--shadow);
+  }
+  .campus-name{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0;line-height:1.2}
+  .campus-meta{font-size:11px;opacity:0.85;margin-top:4px;font-family:'JetBrains Mono',monospace}
+  .campus-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .campus-actions button{
+    background:rgba(255,255,255,0.15);color:#FBF6E9;border:none;
+    padding:4px 9px;border-radius:99px;font-size:11px;cursor:pointer;
+    font-family:inherit;
+  }
+  .campus-actions button:hover{background:rgba(255,255,255,0.28)}
+  .section{margin-bottom:24px}
+  .section h3{
+    font-family:'Fraunces',serif;font-weight:500;font-size:13px;
+    letter-spacing:0.05em;text-transform:uppercase;color:var(--bronze);
+    margin:0 0 10px 0;padding-bottom:6px;border-bottom:1px solid var(--line-soft);
+  }
+  .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+  .field label{font-size:11px;color:var(--ink-soft);font-weight:500}
+  .field input,.field textarea,.field select{
+    background:#FFFCF5;border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:8px 10px;font-family:inherit;font-size:13px;color:var(--ink);outline:none;
+  }
+  .field input[type=color]{padding:2px;height:32px;cursor:pointer}
+  .field textarea{min-height:120px;resize:vertical;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--campus-color);box-shadow:0 0 0 2px color-mix(in srgb, var(--campus-color) 18%, transparent)}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--campus-color);color:#FBF6E9;border:none;border-radius:var(--radius-sm);
+    padding:8px 14px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;
+    transition:filter 0.12s;
+  }
+  .btn:hover{filter:brightness(0.9)}
+  .btn.ghost{background:transparent;color:var(--campus-color);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--surface-2)}
+  .btn.warn{background:var(--warn)}
+  .btn.copper{background:var(--copper)}
+  .btn.small{padding:5px 10px;font-size:12px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .help{font-size:11px;color:var(--ink-mute);line-height:1.5;margin-top:6px}
+  .help code{background:var(--surface-2);padding:1px 4px;border-radius:2px;font-size:11px;color:var(--bronze)}
+  .main{padding:30px 36px 60px;overflow-x:auto}
+  .header-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;gap:24px;flex-wrap:wrap}
+  .page-title{font-family:'Fraunces',serif;font-weight:500;font-size:34px;font-variation-settings:"opsz" 144;line-height:1.1;margin:0;color:var(--ink)}
+  .page-title em{font-style:italic;font-weight:400;color:var(--campus-color)}
+  .lede{color:var(--ink-soft);max-width:580px;margin:8px 0 0;font-size:14px}
+  .stats{display:flex;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+  .stat{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:11px 15px;min-width:108px;box-shadow:var(--shadow);
+  }
+  .stat-num{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--campus-color);line-height:1}
+  .stat-lbl{font-size:10px;color:var(--ink-mute);letter-spacing:0.05em;text-transform:uppercase;margin-top:5px}
+  .toolbar{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:10px 14px;margin-bottom:18px;
+  }
+  .toolbar label{font-size:12px;color:var(--ink-soft);margin-right:4px}
+  .toolbar select,.toolbar input[type=text]{
+    background:#FFFCF5;border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:5px 8px;font-size:12px;color:var(--ink);
+  }
+  .pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:500}
+  .pill.akademik{background:rgba(45,74,62,0.12);color:var(--forest)}
+  .pill.latih{background:rgba(184,105,61,0.14);color:var(--copper)}
+  .pill.gap{background:rgba(192,145,74,0.16);color:#7A5A2C}
+  .view-switch{display:flex;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden}
+  .view-switch button{background:transparent;border:none;padding:6px 12px;font-size:12px;cursor:pointer;color:var(--ink-soft);border-right:1px solid var(--line);font-family:inherit}
+  .view-switch button:last-child{border-right:none}
+  .view-switch button.active{background:var(--campus-color);color:#FBF6E9}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);margin-bottom:22px}
+  .panel-title{font-family:'Fraunces',serif;font-weight:500;font-size:18px;margin:0 0 4px;color:var(--ink)}
+  .panel-sub{font-size:12px;color:var(--ink-mute);margin-bottom:14px}
+  .gantt-wrap{overflow-x:auto;border:1px solid var(--line-soft);border-radius:var(--radius-sm);background:#FFFCF5}
+  .gantt{display:grid;grid-template-rows:auto;position:relative;min-width:780px}
+  .gantt-months{display:grid;border-bottom:1px solid var(--line);background:var(--surface-2)}
+  .gantt-month{font-family:'Fraunces',serif;font-weight:500;font-size:12px;color:var(--ink-soft);padding:6px 8px;border-right:1px solid var(--line);text-align:left;letter-spacing:0.03em}
+  .gantt-row{display:grid;border-bottom:1px solid var(--line-soft);position:relative;min-height:38px}
+  .gantt-row:last-child{border-bottom:none}
+  .gantt-row .label{padding:8px 10px;font-size:12px;color:var(--ink-soft);background:var(--surface-2);border-right:1px solid var(--line);position:sticky;left:0;z-index:2;display:flex;align-items:center;gap:6px}
+  .gantt-row .lane{position:relative;grid-column:2;background:transparent}
+  .gantt-cell{border-right:1px dashed var(--line-soft);position:absolute;top:0;bottom:0;width:1px}
+  .gantt-bar{position:absolute;top:7px;height:24px;border-radius:var(--radius-sm);font-size:11px;color:#FBF6E9;padding:2px 8px;display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.2),0 1px 2px rgba(0,0,0,0.1);transition:transform 0.12s,box-shadow 0.12s}
+  .gantt-bar:hover{transform:translateY(-1px);box-shadow:inset 0 -2px 0 rgba(0,0,0,0.22),0 3px 8px rgba(0,0,0,0.15);z-index:5}
+  .gantt-bar.konflik{outline:2px solid var(--warn);outline-offset:1px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-soft);margin-top:14px}
+  .legend-item{display:inline-flex;align-items:center;gap:6px}
+  .legend-dot{width:12px;height:12px;border-radius:2px}
+  .dot-kf{background:transparent;outline:2px solid var(--warn);outline-offset:-2px}
+  .month-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+  .month-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+  .month-name{font-family:'Fraunces',serif;font-weight:500;font-size:18px;color:var(--ink);margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+  .month-name span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-mute);font-weight:400}
+  .month-table{width:100%;border-collapse:collapse;font-size:11px}
+  .month-table th{font-weight:500;color:var(--ink-mute);text-align:center;padding:4px 0;border-bottom:1px solid var(--line-soft);font-family:'Inter',sans-serif;letter-spacing:0.04em}
+  .month-table td{height:48px;vertical-align:top;padding:2px;border-bottom:1px solid var(--line-soft);position:relative}
+  .month-table td.other-month{background:var(--surface-2);color:var(--ink-mute)}
+  .month-table td.today{background:rgba(45,74,62,0.06)}
+  .day-num{font-size:10px;color:var(--ink-mute);font-family:'JetBrains Mono',monospace}
+  .month-event{display:block;font-size:10px;padding:1px 4px;margin-top:2px;border-radius:2px;color:#FBF6E9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+  .month-event.akademik{background:var(--campus-color)}
+  .month-event.latih{background:var(--copper)}
+  .month-event.gap{background:var(--ochre);color:#1F2230}
+  .conflict-list{background:#FBF1E9;border:1px solid #D9B19E;border-radius:var(--radius);padding:12px 14px;margin-bottom:18px;font-size:13px;color:#7A3A1A}
+  .conflict-list:empty{display:none}
+  .conflict-item{padding:6px 0;border-bottom:1px dashed #D9B19E;display:flex;gap:8px;align-items:center}
+  .conflict-item:last-child{border-bottom:none}
+  .conflict-tag{font-size:10px;background:var(--warn);color:#FBF6E9;padding:2px 6px;border-radius:99px;letter-spacing:0.04em;font-weight:600}
+  .data-table{width:100%;border-collapse:collapse;font-size:12px}
+  .data-table th{text-align:left;padding:8px 6px;border-bottom:2px solid var(--line);font-family:'Fraunces',serif;font-weight:500;color:var(--bronze);font-size:12px;letter-spacing:0.04em;text-transform:uppercase}
+  .data-table td{padding:6px;border-bottom:1px solid var(--line-soft)}
+  .data-table input,.data-table select{width:100%;border:1px solid transparent;background:transparent;padding:3px 5px;border-radius:2px;font-family:inherit;font-size:12px;color:var(--ink)}
+  .data-table input:hover,.data-table select:hover{border-color:var(--line)}
+  .data-table input:focus,.data-table select:focus{border-color:var(--campus-color);background:#FFFCF5;outline:none}
+  .campus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .campus-tile{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 18px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .campus-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:var(--accent,#2D4A3E)}
+  .campus-tile h3{margin:0 0 4px;font-family:'Fraunces',serif;font-weight:500;font-size:18px;color:var(--ink)}
+  .campus-tile .meta{font-size:11px;color:var(--ink-mute);font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+  .campus-tile .counts{display:flex;gap:10px;font-size:11px;color:var(--ink-soft);margin-bottom:12px;flex-wrap:wrap}
+  .campus-tile .counts span{padding:2px 8px;background:var(--surface-2);border-radius:99px}
+
+  /* REMINDER */
+  .reminder-card{
+    background:#FFFCF5;border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:12px 14px;margin-bottom:10px;display:flex;gap:14px;align-items:center;
+  }
+  .reminder-card .when{
+    min-width:120px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);
+  }
+  .reminder-card .when strong{display:block;color:var(--ink);font-size:14px;font-family:'Fraunces',serif;font-weight:600}
+  .reminder-card .body{flex:1;min-width:0}
+  .reminder-card .body .name{font-weight:500;color:var(--ink);font-size:13px}
+  .reminder-card .body .meta{font-size:11px;color:var(--ink-mute);margin-top:2px}
+  .reminder-card .actions{display:flex;gap:6px;flex-shrink:0}
+  .reminder-empty{text-align:center;color:var(--ink-mute);padding:30px;font-size:13px}
+  .reminder-soon{border-left:4px solid var(--copper);background:#FDF4EB}
+  .reminder-overdue{border-left:4px solid var(--warn);background:#FBF1E9}
+  .notif-badge{
+    display:inline-flex;align-items:center;gap:5px;background:#FDF4EB;
+    border:1px solid #D9B19E;border-radius:99px;padding:3px 9px;font-size:11px;color:var(--copper);
+    font-weight:500;cursor:pointer;
+  }
+  .notif-badge.on{background:#EAF3ED;border-color:#9BBDA6;color:var(--good)}
+  .notif-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--copper)}
+  .notif-badge.on .dot{background:var(--good);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  .offset-pills{display:flex;gap:4px;flex-wrap:wrap}
+  .offset-pill{padding:2px 8px;border-radius:99px;background:var(--surface-2);font-size:10px;color:var(--ink-soft);cursor:pointer;border:1px solid var(--line)}
+  .offset-pill.active{background:var(--campus-color);color:#FBF6E9;border-color:var(--campus-color)}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(31,34,48,0.5);display:none;align-items:center;justify-content:center;z-index:100}
+  .modal-bg.open{display:flex}
+  .modal{background:var(--surface);border-radius:var(--radius);max-width:620px;width:92%;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto}
+  .modal h2{font-family:'Fraunces',serif;font-weight:500;margin:0 0 12px;font-size:20px}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+  .modal pre{
+    background:#1F2230;color:#FBF6E9;padding:14px;border-radius:var(--radius-sm);
+    font-size:11px;overflow-x:auto;line-height:1.5;max-height:300px;
+  }
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#FBF6E9;padding:10px 18px;border-radius:var(--radius);font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:200;opacity:0;transition:opacity 0.2s;pointer-events:none}
+  .toast.show{opacity:1}
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .sidebar{position:relative;top:0;height:auto;border-right:none;border-bottom:1px solid var(--line)}
+    .main{padding:24px 18px 50px}
+    header.topbar{padding:12px 16px}
+  }
+  @media print{
+    body{background:#fff}
+    header.topbar,.sidebar,.toolbar,.btn,.modal-bg,.toast{display:none !important}
+    .main{padding:0}
+    .panel{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">A</span>
+    <div>
+      <div class="brand-title">Aldi Planner</div>
+      <div class="brand-sub">Multi-Kampus · Pengingat Email</div>
+    </div>
+  </div>
+  <div class="campus-tabs" id="campusTabs"></div>
+  <button class="btn small" onclick="openNewCampus()">+ Kampus</button>
+  <button class="btn ghost small" onclick="openCombined()">⊕ Gabungan</button>
+  <button class="btn ghost small" onclick="openSync()">⇅ Sync</button>
+</div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="campus-header" id="campusHeader">
+      <h3 class="campus-name" id="campusName">—</h3>
+      <div class="campus-meta" id="campusMeta">—</div>
+      <div class="campus-actions">
+        <button onclick="renameCampus()">Ubah Nama</button>
+        <button onclick="setCampusColor()">Warna</button>
+        <button onclick="deleteCampus()">Hapus</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Input Kalender Akademik</h3>
+      <div class="field">
+        <label>Paste Kalender (satu baris = satu kegiatan)</label>
+        <textarea id="pasteArea" placeholder="1 – 15 September 2025 : KRS Online&#10;16 September 2025 : Awal Perkuliahan"></textarea>
+      </div>
+      <div class="row">
+        <button class="btn small" onclick="parsePaste()">Parse & Tambahkan</button>
+        <button class="btn ghost small" onclick="loadContoh()">Muat Contoh</button>
+        <button class="btn ghost small" onclick="clearPaste()">Bersihkan</button>
+      </div>
+      <div class="help">Format: <code>tanggal – tanggal bulan tahun : nama</code>.</div>
+    </div>
+
+    <div class="section">
+      <h3>Aturan Auto-Jadwal (H-x)</h3>
+      <div class="field"><label>Pelatihan KRS</label><input type="number" id="hKRS" value="14" min="0" onchange="save()"></div>
+      <div class="field"><label>Sosialisasi PMB</label><input type="number" id="hPMB" value="21" min="0" onchange="save()"></div>
+      <div class="field"><label>Operasional Perkuliahan</label><input type="number" id="hOps" value="7" min="0" onchange="save()"></div>
+      <div class="field"><label>Keuangan/UKT</label><input type="number" id="hKeu" value="7" min="0" onchange="save()"></div>
+      <div class="field"><label>Ujian</label><input type="number" id="hUji" value="10" min="0" onchange="save()"></div>
+      <div class="row"><button class="btn small" onclick="generateLatihan()">Generate Pelatihan</button></div>
+    </div>
+
+    <div class="section">
+      <h3>Pengisi Celah (Gap Training)</h3>
+      <div class="field"><label>Unit pengisi celah</label><textarea id="gapUnits" style="min-height:130px">SPMI
+OBE
+CBT
+Karirlink
+Kepegawaian
+Kemahasiswaan
+Akreditasi
+Litabmas
+Simkerma</textarea></div>
+      <div class="field"><label>Durasi (hari)</label><input type="number" id="gapDur" value="2" min="1" max="7"></div>
+      <div class="field"><label>Lewati minggu yang ada kegiatan</label><select id="gapSkip"><option value="yes" selected>Ya</option><option value="no">Tidak</option></select></div>
+      <div class="row">
+        <button class="btn small" onclick="generateGap()">Isi Celah</button>
+        <button class="btn ghost small" onclick="clearGap()">Hapus Gap</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pengingat & Notifikasi</h3>
+      <div class="row" style="margin-bottom:10px">
+        <span class="notif-badge" id="notifBadge" onclick="toggleBrowserNotif()">
+          <span class="dot"></span><span id="notifBadgeText">Notifikasi Browser: Off</span>
+        </span>
+      </div>
+      <div class="field">
+        <label>Default offset pengingat (hari sebelum)</label>
+        <div class="offset-pills" id="offsetPills"></div>
+        <div class="help">Otomatis diterapkan ke setiap pelatihan baru. Bisa diubah per-kegiatan dari panel Pengingat.</div>
+      </div>
+      <div class="field">
+        <label>Penerima email default (satu per baris, format: Nama &lt;email@x&gt;)</label>
+        <textarea id="recipientsArea" style="min-height:90px" placeholder="Panitia KRS <panitia.krs@kampus.ac.id>&#10;Wakil Rektor I <wr1@kampus.ac.id>"></textarea>
+      </div>
+      <div class="row">
+        <button class="btn copper small" onclick="saveNotifSettings()">Simpan Pengaturan</button>
+        <button class="btn ghost small" onclick="openAppsScript()">📜 Apps Script</button>
+      </div>
+      <div class="help">Reminder email bekerja via: <strong>(1)</strong> notifikasi browser saat halaman terbuka, <strong>(2)</strong> tombol <em>Email Panitia</em> di tiap jadwal, <strong>(3)</strong> import <strong>.ics</strong> dengan VALARM ke kalender Anda, atau <strong>(4)</strong> Google Apps Script untuk auto-email terjadwal.</div>
+    </div>
+
+    <div class="section">
+      <h3>Backup & Ekspor</h3>
+      <div class="row">
+        <button class="btn ghost small" onclick="exportJSON()">Export JSON</button>
+        <button class="btn ghost small" onclick="exportCSV()">CSV</button>
+        <button class="btn ghost small" onclick="exportICS()">.ics + alarm</button>
+        <button class="btn ghost small" onclick="window.print()">Cetak/PDF</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn ghost small" onclick="importJSON()">Import JSON</button>
+        <button class="btn warn small" onclick="resetAll()">Reset</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div id="mainContent"></div>
+    <div style="text-align:center;color:var(--ink-mute);font-size:11px;margin-top:40px;font-family:'JetBrains Mono',monospace">
+      aldi planner · multi-kampus · pengingat email & kalender
+    </div>
+  </main>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h2 id="modalTitle">Detail</h2>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn ghost small" onclick="closeModal()">Tutup</button>
+      <button class="btn warn small" id="modalDeleteBtn" style="display:none" onclick="deleteFromModal()">Hapus</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" style="display:none" accept=".json" onchange="handleImport(event)">
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'aldi_planner_v3';
+const CAMPUS_COLORS = ['#2D4A3E','#3B4366','#6B3B5A','#2F6A6E','#A05A2C','#5E4B8B','#7A4F2E','#3D6B45','#8B3D52','#4A6680'];
+const REMINDER_OFFSETS = [1,3,7,14];
+
+let state = {campuses:[], activeCampusId:null, notif:{defaultOffsets:[1,3,7],recipients:[],browserEnabled:false}};
+let view = 'gantt';
+let combinedMode = false;
+let modalTargetId = null, modalTargetCampus = null;
+const scheduledNotifs = []; // {timeoutId, fireAt, event}
+
+const MONTHS_ID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const MONTHS_MAP = {januari:0,jan:0,pebruari:1,februari:1,feb:1,maret:2,mar:2,april:3,apr:3,mei:4,juni:5,jun:5,juli:6,jul:6,agustus:7,agu:7,ags:7,september:8,sep:8,sept:8,oktober:9,okt:9,oct:9,november:10,nov:10,desember:11,des:11,dec:11};
+
+function uid(){return Math.random().toString(36).slice(2,10)}
+function ymd(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0')+"-"+String(d.getDate()).padStart(2,'0')}
+function parseDate(s){
+  if(!s) return null; s = s.trim().toLowerCase(); let m;
+  if(m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)) return new Date(+m[1], +m[2]-1, +m[3]);
+  if(m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)) return new Date(+m[3], +m[2]-1, +m[1]);
+  if(m = s.match(/^(\d{1,2})\s+([a-zA-Z]+)(?:\s+(\d{4}))?$/)){
+    const cur = getActive(); let yr = m[3] ? +m[3] : (cur && cur.calendar.length ? cur.calendar[cur.calendar.length-1].start.getFullYear() : new Date().getFullYear());
+    let mon = MONTHS_MAP[m[2]]; if(mon===undefined) return null;
+    return new Date(yr, mon, +m[1]);
+  }
+  if(m = s.match(/^(\d{1,2})$/)) return new Date(new Date().getFullYear(), new Date().getMonth(), +m[1]);
+  return null;
+}
+function addDays(d,n){let r=new Date(d); r.setDate(r.getDate()+n); return r}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function escapeIcs(s){return String(s).replace(/[\\;,\n]/g,m=>({"\\":"\\\\",";":"\\;",",":"\\,","\n":"\\n"}[m]))}
+function escapeUrl(s){return encodeURIComponent(s)}
+function fmtDateId(d){return d.getDate()+' '+MONTHS_ID[d.getMonth()].slice(0,3)+' '+d.getFullYear()}
+function getActive(){return state.campuses.find(c=>c.id===state.activeCampusId)||null}
+
+function renderAll(){
+  renderCampusTabs();
+  renderSidebar();
+  renderNotifBadge();
+  if(!state.campuses.length){ renderEmpty(); return; }
+  if(combinedMode) renderDashboard();
+  else renderMain();
+}
+
+function renderEmpty(){
+  document.getElementById('mainContent').innerHTML = `
+    <h1 class="page-title">Mulai dengan <em>Kampus</em> pertama Anda</h1>
+    <p class="lede">Tambah kampus, tempel kalender akademik, dan Aldi Planner akan otomatis menyusun rencana pelatihan + reminder ke email/kalender.</p>
+    <div style="margin-top:24px"><button class="btn" onclick="openNewCampus()">+ Tambah Kampus</button></div>
+  `;
+}
+
+function renderCampusTabs(){
+  const tabs = document.getElementById('campusTabs');
+  tabs.innerHTML = state.campuses.map(c=>{
+    const isActive = c.id === state.activeCampusId && !combinedMode;
+    return `<div class="campus-tab ${isActive?'active':''}" onclick="switchCampus('${c.id}')" style="${!isActive?`--campus-color:${c.color}`:''}">
+      <span class="dot" style="background:${c.color}"></span>
+      <span>${escapeHtml(c.name)}</span>
+      <span class="x" onclick="event.stopPropagation();deleteCampusById('${c.id}')" title="Hapus">✕</span>
+    </div>`;
+  }).join('');
+}
+
+function switchCampus(id){ combinedMode = false; state.activeCampusId = id; save(); renderAll(); }
+function openNewCampus(){
+  const name = prompt('Nama kampus baru:','Kampus Baru'); if(!name) return;
+  addCampus(name);
+}
+function addCampus(name, color){
+  const c = {
+    id: uid(), name: name || 'Kampus Baru',
+    color: color || CAMPUS_COLORS[state.campuses.length % CAMPUS_COLORS.length],
+    calendar: [], generated: [],
+    rules: {hKRS:14, hPMB:21, hOps:7, hKeu:7, hUji:10},
+  };
+  state.campuses.push(c);
+  state.activeCampusId = c.id;
+  save(); renderAll();
+  return c;
+}
+function renameCampus(){ const c=getActive(); if(!c)return; const n=prompt('Nama:',c.name); if(n){c.name=n; save(); renderAll();}}
+function setCampusColor(){ const c=getActive(); if(!c)return; const i=prompt('Warna hex (#2D4A3E):',c.color); if(i && /^#[0-9A-Fa-f]{6}$/.test(i)){c.color=i; save(); renderAll();}}
+function deleteCampus(){ deleteCampusById(state.activeCampusId); }
+function deleteCampusById(id){
+  if(!confirm('Hapus kampus ini dan semua datanya?')) return;
+  state.campuses = state.campuses.filter(c=>c.id!==id);
+  if(state.activeCampusId === id){ state.activeCampusId = state.campuses[0]?.id || null; }
+  save(); renderAll();
+}
+function openCombined(){ combinedMode = true; renderAll(); }
+
+function renderSidebar(){
+  const c = getActive();
+  if(!c){
+    document.getElementById('campusName').textContent = 'Belum ada kampus';
+    document.getElementById('campusMeta').textContent = '—';
+    document.documentElement.style.setProperty('--campus-color', '#2D4A3E');
+    return;
+  }
+  document.getElementById('campusName').textContent = c.name;
+  document.getElementById('campusMeta').textContent = `${c.calendar.length} kegiatan · ${c.generated.length} pelatihan`;
+  document.documentElement.style.setProperty('--campus-color', c.color);
+  document.getElementById('hKRS').value = c.rules.hKRS;
+  document.getElementById('hPMB').value = c.rules.hPMB;
+  document.getElementById('hOps').value = c.rules.hOps;
+  document.getElementById('hKeu').value = c.rules.hKeu;
+  document.getElementById('hUji').value = c.rules.hUji;
+  renderOffsetPills();
+  // recipients
+  document.getElementById('recipientsArea').value = (state.notif.recipients||[]).map(r=>r.name?`${r.name} <${r.email}>`:r.email).join('\n');
+}
+function readRules(){
+  const c = getActive(); if(!c) return;
+  c.rules.hKRS = +document.getElementById('hKRS').value||0;
+  c.rules.hPMB = +document.getElementById('hPMB').value||0;
+  c.rules.hOps = +document.getElementById('hOps').value||0;
+  c.rules.hKeu = +document.getElementById('hKeu').value||0;
+  c.rules.hUji = +document.getElementById('hUji').value||0;
+}
+
+function parsePaste(){
+  const c = getActive(); if(!c){ alert('Pilih/buat kampus dulu.'); return; }
+  const text = document.getElementById('pasteArea').value.trim();
+  if(!text){ alert('Tempel dulu teks kalender.'); return; }
+  const lines = text.split(/\r?\n/).filter(l=>l.trim());
+  let added = 0;
+  for(const raw of lines){
+    const parts = raw.split(':');
+    if(parts.length<2) continue;
+    const datePart = parts[0].trim();
+    const name = parts.slice(1).join(':').trim();
+    if(!name) continue;
+    const rm = datePart.match(/^(\d{1,2})\s*[–\-—]\s*(\d{1,2})\s+([a-zA-Z]+)(?:\s+(\d{4}))?$/);
+    let start, end;
+    if(rm){
+      const mon = MONTHS_MAP[rm[3].toLowerCase()];
+      if(mon===undefined) continue;
+      let yr = rm[4] ? +rm[4] : (c.calendar.length ? c.calendar[c.calendar.length-1].start.getFullYear() : new Date().getFullYear());
+      start = new Date(yr, mon, +rm[1]);
+      end = new Date(yr, mon, +rm[2]);
+    } else {
+      const s = parseDate(datePart); if(!s) continue;
+      start = end = s;
+    }
+    c.calendar.push({id:uid(), name, start, end, unit:detectUnit(name)});
+    added++;
+  }
+  if(added){ save(); renderAll(); toast(added+' kegiatan ditambahkan.'); }
+  else alert('Tidak ada baris yang berhasil diparse.');
+}
+function clearPaste(){ document.getElementById('pasteArea').value = ''; }
+function detectUnit(name){
+  const n = name.toLowerCase();
+  if(n.includes('krs')) return 'KRS';
+  if(n.includes('pmb') || n.includes('mahasiswa baru')) return 'PMB';
+  if(n.includes('ukt') || n.includes('keuangan') || n.includes('pembayaran')) return 'Keuangan';
+  if(n.includes('ujian') || n.includes('uts') || n.includes('uas')) return 'Ujian';
+  if(n.includes('perkuliahan') || n.includes('kuliah')) return 'Operasional';
+  return 'Umum';
+}
+
+function loadContoh(){
+  const c = getActive(); if(!c){ alert('Pilih/buat kampus dulu.'); return; }
+  document.getElementById('pasteArea').value =
+`1 – 15 September 2025 : KRS Online Semester Ganjil
+16 September 2025 : Awal Perkuliahan
+20 September – 10 Oktober 2025 : Pembayaran UKT
+1 – 30 Oktober 2025 : Pembukaan PMB Gelombang I
+10 – 24 November 2025 : Ujian Tengah Semester
+1 – 15 Desember 2025 : Ujian Akhir Semester
+16 Desember 2025 – 15 Januari 2026 : Libur Semester
+16 Januari 2026 : Awal Perkuliahan Semester Genap
+1 – 15 Februari 2026 : KRS Online Semester Genap
+1 – 30 Maret 2026 : PMB Gelombang II
+5 – 19 April 2026 : Ujian Tengah Semester Genap
+1 – 15 Juni 2026 : Ujian Akhir Semester Genap`;
+  parsePaste();
+}
+
+function generateLatihan(){
+  const c = getActive(); if(!c){ alert('Pilih kampus dulu.'); return; }
+  readRules();
+  c.generated = c.generated.filter(e => e.jenis !== 'latih');
+  let added = 0;
+  const defaultOff = state.notif.defaultOffsets || [1,3];
+  for(const ev of [...c.calendar]){
+    const n = ev.name.toLowerCase();
+    let h=null, tpl=null, unit=null;
+    if(n.includes('krs')){ h=c.rules.hKRS; tpl='Pelatihan KRS untuk Operator Akademik'; unit='KRS'; }
+    else if(n.includes('pmb') || n.includes('mahasiswa baru')){ h=c.rules.hPMB; tpl='Sosialisasi PMB'; unit='PMB'; }
+    else if(n.includes('perkuliahan') || n.includes('kuliah')){ h=c.rules.hOps; tpl='Pelatihan Operasional Perkuliahan'; unit='Operasional'; }
+    else if(n.includes('ukt') || n.includes('keuangan') || n.includes('pembayaran')){ h=c.rules.hKeu; tpl='Pelatihan Keuangan & Pembayaran UKT'; unit='Keuangan'; }
+    else if(n.includes('ujian') || n.includes('uts') || n.includes('uas')){ h=c.rules.hUji; tpl='Pelatihan Pengelolaan Ujian (CBT)'; unit='Ujian'; }
+    if(h===null) continue;
+    const start = addDays(ev.start, -h);
+    const end = addDays(start, 1);
+    c.generated.push({id:uid(), name:tpl+' — '+ev.name, start, end, jenis:'latih', unit, sourceId:ev.id, reminderOffsets:[...defaultOff]});
+    added++;
+  }
+  save(); renderAll(); toast(added+' pelatihan inti dijadwalkan.'); scheduleAllNotifs();
+}
+
+function generateGap(){
+  const c = getActive(); if(!c){ alert('Pilih kampus dulu.'); return; }
+  const units = document.getElementById('gapUnits').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  const dur = Math.max(1, parseInt(document.getElementById('gapDur').value)||2);
+  const skip = document.getElementById('gapSkip').value === 'yes';
+  c.generated = c.generated.filter(e => e.jenis !== 'gap');
+  if(!c.calendar.length){ alert('Belum ada kegiatan akademik.'); return; }
+  let minD = c.calendar.reduce((a,e)=>e.start<a?e.start:a, c.calendar[0].start);
+  let maxD = c.calendar.reduce((a,e)=>e.end>a?e.end:a, c.calendar[0].end);
+  const weeks = []; let cur = new Date(minD); cur.setDate(cur.getDate()-cur.getDay());
+  while(cur <= maxD){ weeks.push({start:new Date(cur), end:addDays(cur,6)}); cur = addDays(cur,7); }
+  let added=0, ui=0;
+  const defaultOff = state.notif.defaultOffsets || [1,3];
+  for(const w of weeks){
+    const overlap = c.calendar.some(e => !(w.end<e.start||w.start>e.end));
+    if(skip && overlap) continue;
+    const unit = units[ui % units.length]; ui++;
+    const start=w.start, end=addDays(start, dur-1);
+    c.generated.push({id:uid(), name:'Pelatihan '+unit, start, end, jenis:'gap', unit, sourceId:null, reminderOffsets:[...defaultOff]});
+    added++;
+  }
+  save(); renderAll(); toast(added+' gap training dijadwalkan.'); scheduleAllNotifs();
+}
+
+function clearGap(){
+  const c = getActive(); if(!c) return;
+  c.generated = c.generated.filter(e=>e.jenis!=='gap'); save(); renderAll();
+}
+
+function allEvents(){
+  const out = [];
+  for(const c of state.campuses){
+    for(const e of c.calendar) out.push({...e, _campus:c, _campusName:c.name, _campusColor:c.color});
+    for(const e of c.generated) out.push({...e, _campus:c, _campusName:c.name, _campusColor:c.color});
+  }
+  return out;
+}
+function activeEvents(){
+  if(combinedMode) return allEvents();
+  const c = getActive(); if(!c) return [];
+  return [
+    ...c.calendar.map(e=>({...e,_campus:c,_campusName:c.name,_campusColor:c.color})),
+    ...c.generated.map(e=>({...e,_campus:c,_campusName:c.name,_campusColor:c.color})),
+  ];
+}
+function detectConflicts(items){
+  const c = [];
+  for(let i=0;i<items.length;i++){
+    for(let j=i+1;j<items.length;j++){
+      const a=items[i], b=items[j];
+      if(a.jenis==='akademik' && b.jenis==='akademik') continue;
+      if(a.end < b.start || a.start > b.end) continue;
+      c.push({a,b});
+    }
+  }
+  return c;
+}
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+function renderDashboard(){
+  const camps = state.campuses;
+  const totalAk = camps.reduce((s,c)=>s+c.calendar.length,0);
+  const totalGen = camps.reduce((s,c)=>s+c.generated.length,0);
+  const all = allEvents();
+  const conflicts = detectConflicts(all);
+  const upcoming = getUpcoming(all, 30);
+
+  document.getElementById('mainContent').innerHTML = `
+    <h1 class="page-title">Tinjauan <em>Semua Kampus</em></h1>
+    <p class="lede">Ringkasan semua kampus yang Anda kelola. Klik kartu untuk membuka perencanaannya.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">${camps.length}</div><div class="stat-lbl">Kampus</div></div>
+      <div class="stat"><div class="stat-num">${totalAk}</div><div class="stat-lbl">Akademik</div></div>
+      <div class="stat"><div class="stat-num">${totalGen}</div><div class="stat-lbl">Pelatihan</div></div>
+      <div class="stat"><div class="stat-num">${upcoming.length}</div><div class="stat-lbl">Pengingat 30 Hari</div></div>
+    </div>
+    <div class="panel">
+      <h2 class="panel-title">Pengingat 30 Hari Ke Depan</h2>
+      <div class="panel-sub">Otomatis menampilkan pelatihan yang akan datang. Klik untuk lihat aksi email/kalender.</div>
+      ${upcoming.length ? renderReminderList(upcoming) : `<div class="reminder-empty">Tidak ada pelatihan dalam 30 hari ke depan. Generate pelatihan dulu.</div>`}
+    </div>
+    <div class="panel">
+      <h2 class="panel-title">Daftar Kampus</h2>
+      <div class="campus-grid">${camps.map(c=>{
+        const ak = c.calendar.length, lt = c.generated.filter(e=>e.jenis==='latih').length, gp = c.generated.filter(e=>e.jenis==='gap').length;
+        return `<div class="campus-tile" style="--accent:${c.color}" onclick="switchCampus('${c.id}')">
+          <h3>${escapeHtml(c.name)}</h3>
+          <div class="meta">${c.calendar.length+c.generated.length} kegiatan · ${c.color}</div>
+          <div class="counts"><span>Akademik: ${ak}</span><span>Pelatihan: ${lt}</span><span>Gap: ${gp}</span></div>
+          <button class="btn small" style="background:${c.color}" onclick="event.stopPropagation();switchCampus('${c.id}')">Buka</button>
+        </div>`;
+      }).join('')}</div>
+    </div>
+    ${conflicts.length?`<div class="conflict-list"><strong>⚠ ${conflicts.length} bentrok lintas kampus:</strong>${conflicts.map(p=>`<div class="conflict-item"><span class="conflict-tag">BENTROK</span><span><strong>${escapeHtml(p.a.name)}</strong> <em>(${escapeHtml(p.a._campusName)})</em> &nbsp;|&nbsp; <strong>${escapeHtml(p.b.name)}</strong> <em>(${escapeHtml(p.b._campusName)})</em></span></div>`).join('')}</div>`:''}
+  `;
+}
+
+function renderMain(){
+  const events = activeEvents().sort((a,b)=>a.start-b.start);
+  const c = getActive();
+  const totalAk = c.calendar.length;
+  const lt = c.generated.filter(e=>e.jenis==='latih').length;
+  const gp = c.generated.filter(e=>e.jenis==='gap').length;
+  const conflicts = detectConflicts(events);
+  const upcoming = getUpcoming(events, 30);
+
+  document.getElementById('mainContent').innerHTML = `
+    <h1 class="page-title">Rencana <em>${escapeHtml(c.name)}</em></h1>
+    <p class="lede">Tempel kalender akademik di panel kiri, atur H-x, generate pelatihan, lalu Aldi Planner akan mengirim reminder via email dan kalender.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">${totalAk}</div><div class="stat-lbl">Akademik</div></div>
+      <div class="stat"><div class="stat-num">${lt}</div><div class="stat-lbl">Pelatihan Inti</div></div>
+      <div class="stat"><div class="stat-num">${gp}</div><div class="stat-lbl">Gap Training</div></div>
+      <div class="stat"><div class="stat-num">${upcoming.length}</div><div class="stat-lbl">Pengingat 30 Hari</div></div>
+    </div>
+    <div class="toolbar">
+      <div class="view-switch">
+        <button class="${view==='gantt'?'active':''}" data-view="gantt" onclick="setView('gantt')">Gantt</button>
+        <button class="${view==='month'?'active':''}" data-view="month" onclick="setView('month')">Bulanan</button>
+        <button class="${view==='table'?'active':''}" data-view="table" onclick="setView('table')">Tabel</button>
+        <button class="${view==='reminder'?'active':''}" data-view="reminder" onclick="setView('reminder')">🔔 Pengingat</button>
+      </div>
+      <label>Unit:</label><select id="filterUnit" onchange="renderMain()"><option value="">Semua</option></select>
+      <label>Jenis:</label><select id="filterJenis" onchange="renderMain()"><option value="">Semua</option><option value="akademik">Akademik</option><option value="latih">Pelatihan</option><option value="gap">Gap</option></select>
+      <label>Cari:</label><input type="text" id="searchBox" placeholder="kata kunci…" oninput="renderMain()">
+      <div style="flex:1"></div>
+      <span id="conflictCount" class="pill" style="background:rgba(168,67,31,0.12);color:var(--warn)"></span>
+    </div>
+    <div id="conflictPanel" class="conflict-list">${conflicts.length?renderConflictsHtml(conflicts):''}</div>
+    <div id="viewContainer"></div>
+  `;
+  const units = Array.from(new Set(events.map(e=>e.unit))).sort();
+  document.getElementById('filterUnit').innerHTML = '<option value="">Semua</option>' + units.map(u=>`<option>${u}</option>`).join('');
+  document.getElementById('conflictCount').textContent = conflicts.length ? conflicts.length + ' bentrok' : '';
+  const filtered = getFiltered(events);
+  if(view==='gantt') document.getElementById('viewContainer').innerHTML = renderGanttPanel(filtered);
+  else if(view==='month') document.getElementById('viewContainer').innerHTML = renderMonthPanel(filtered);
+  else if(view==='table') document.getElementById('viewContainer').innerHTML = renderTablePanel(filtered);
+  else if(view==='reminder') document.getElementById('viewContainer').innerHTML = renderReminderPanel(filtered);
+}
+
+function getFiltered(events){
+  const fu = document.getElementById('filterUnit')?.value || '';
+  const fj = document.getElementById('filterJenis')?.value || '';
+  const q = document.getElementById('searchBox')?.value.trim().toLowerCase() || '';
+  return events.filter(e=>{
+    if(fu && e.unit !== fu) return false;
+    if(fj && e.jenis !== fj) return false;
+    if(q && !e.name.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function renderConflictsHtml(c){
+  return `<strong>⚠ ${c.length} bentrok:</strong>` + c.map(p=>`<div class="conflict-item"><span class="conflict-tag">BENTROK</span><span><strong>${escapeHtml(p.a.name)}</strong> &nbsp;|&nbsp; <strong>${escapeHtml(p.b.name)}</strong></span></div>`).join('');
+}
+
+/* ----- GANTT ----- */
+function renderGanttPanel(events){
+  if(!events.length) return `<div class="panel"><div style="padding:30px;text-align:center;color:var(--ink-mute)">Belum ada kegiatan.</div></div>`;
+  let minD = events.reduce((a,e)=>e.start<a?e.start:a, events[0].start);
+  let maxD = events.reduce((a,e)=>e.end>a?e.end:a, events[0].end);
+  minD = addDays(minD,-7); maxD = addDays(maxD,7);
+  const months = [];
+  let cur = new Date(minD.getFullYear(), minD.getMonth(), 1);
+  while(cur<=maxD){
+    const mStart=new Date(cur), mEnd=new Date(cur.getFullYear(),cur.getMonth()+1,0);
+    months.push({start:mStart,end:mEnd,label:MONTHS_ID[mStart.getMonth()]+' '+mStart.getFullYear()});
+    cur = new Date(cur.getFullYear(),cur.getMonth()+1,1);
+  }
+  const totalDays = Math.ceil((maxD-minD)/(1000*60*60*24))+1;
+  const lanes = []; const rows=[];
+  for(const ev of events){
+    let placed=false;
+    for(let i=0;i<lanes.length;i++){ if(lanes[i]<ev.start){ lanes[i]=ev.end; rows.push({ev,lane:i}); placed=true; break; } }
+    if(!placed){ lanes.push(ev.end); rows.push({ev,lane:lanes.length-1}); }
+  }
+  rows.sort((a,b)=>a.lane-b.lane || a.ev.start-b.ev.start);
+  const gridCols = `180px repeat(${totalDays}, 14px)`;
+  const monthCols = `180px ` + months.map(m=>{
+    const days = Math.ceil((Math.min(m.end,maxD) - Math.max(m.start,minD))/(1000*60*60*24))+1;
+    return days+'px';
+  }).join(' ');
+  let html = `<div class="panel">
+    <h2 class="panel-title">Linimasa</h2>
+    <div class="panel-sub">Bar akademik mengikuti warna kampus. Hover untuk detail. 🔔 = memiliki pengingat.</div>
+    <div class="gantt-wrap"><div class="gantt" style="grid-template-columns:${gridCols}">`;
+  html += `<div class="gantt-months" style="grid-column:1/-1;display:grid;grid-template-columns:${monthCols}"><div class="gantt-month">&nbsp;</div>`;
+  for(const m of months){
+    const days = Math.ceil((Math.min(m.end,maxD) - Math.max(m.start,minD))/(1000*60*60*24))+1;
+    html += `<div class="gantt-month" style="grid-column:span ${days}">${m.label}</div>`;
+  }
+  html += `</div>`;
+  for(const {ev, lane} of rows){
+    const dayOff = Math.floor((ev.start-minD)/(1000*60*60*24));
+    const span = Math.floor((ev.end-ev.start)/(1000*60*60*24))+1;
+    const colorStyle = ev.jenis==='akademik' ? `background:${ev._campusColor}` : (ev.jenis==='latih' ? `background:var(--copper)` : `background:var(--ochre);color:#1F2230`);
+    const bell = (ev.jenis!=='akademik' && ev.reminderOffsets && ev.reminderOffsets.length) ? '🔔' : '';
+    const konflik = detectConflicts(events).some(p=>p.a.id===ev.id||p.b.id===ev.id);
+    html += `<div class="gantt-row">
+      <div class="label"><span class="pill ${ev.jenis}">${ev.jenis==='akademik'?'AK':ev.jenis==='latih'?'PL':'GP'}</span><span>${escapeHtml(ev.name.length>22?ev.name.slice(0,22)+'…':ev.name)}</span>${bell?'<span style="font-size:10px">🔔</span>':''}</div>
+      <div class="lane" style="grid-column:2;">
+        ${(()=>{let s=''; let cellD=0; while(cellD<=span){ if(cellD>0){ const off=dayOff+cellD; s+=`<div class="gantt-cell" style="left:${off*14}px"></div>`; } cellD+=7; } return s;})()}
+        <div class="gantt-bar ${konflik?'konflik':''}" style="left:${dayOff*14}px;width:${span*14-2}px;${colorStyle}" onclick="openEvent('${ev.id}','${ev._campus.id}')" title="${escapeHtml(ev.name)} — ${ymd(ev.start)} s.d. ${ymd(ev.end)}">${escapeHtml(ev.name)}</div>
+      </div>
+    </div>`;
+  }
+  html += `</div></div>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--campus-color)"></span> Akademik</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--copper)"></span> Pelatihan Inti</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--ochre)"></span> Gap Training</span>
+      <span class="legend-item"><span class="legend-dot dot-kf"></span> Bentrok</span>
+    </div>
+  </div>`;
+  return html;
+}
+
+function renderMonthPanel(events){
+  if(!events.length) return `<div class="panel"><div style="padding:30px;text-align:center;color:var(--ink-mute)">Belum ada kegiatan.</div></div>`;
+  const buckets = new Map();
+  for(const ev of events){
+    const k = ev.start.getFullYear()+'-'+ev.start.getMonth();
+    if(!buckets.has(k)) buckets.set(k,[]); buckets.get(k).push(ev);
+  }
+  let html = `<div class="panel"><h2 class="panel-title">Kalender Bulanan</h2><div class="panel-sub">Klik event untuk melihat aksi email/kalender.</div><div class="month-grid">`;
+  for(const [k,evs] of [...buckets.entries()].sort()){
+    const [y,m] = k.split('-').map(Number);
+    const first = new Date(y,m,1), last = new Date(y,m+1,0);
+    html += `<div class="month-card"><h3 class="month-name">${MONTHS_ID[m]} <span>${y}</span></h3><table class="month-table"><thead><tr><th>Sn</th><th>Sl</th><th>Rb</th><th>Km</th><th>Jm</th><th>Sb</th><th>Mn</th></tr></thead><tbody>`;
+    const startOff = first.getDay(); let day=1-startOff;
+    for(let r=0;r<6;r++){
+      html += '<tr>';
+      for(let c=0;c<7;c++){
+        const d = new Date(y,m,day);
+        const otherMonth = d.getMonth() !== m;
+        const isToday = ymd(d) === ymd(new Date());
+        const dayEvents = events.filter(e => d >= new Date(e.start.getFullYear(),e.start.getMonth(),e.start.getDate()) && d <= new Date(e.end.getFullYear(),e.end.getMonth(),e.end.getDate()));
+        html += `<td class="${otherMonth?'other-month':''} ${isToday?'today':''}"><div class="day-num">${d.getDate()}</div>`;
+        for(const e of dayEvents.slice(0,3)){
+          const st = e.jenis==='akademik' ? `background:${e._campusColor}` : (e.jenis==='latih'?'background:var(--copper)':'background:var(--ochre);color:#1F2230');
+          html += `<span class="month-event" style="${st}" title="${escapeHtml(e.name)} (${e._campusName})" onclick="openEvent('${e.id}','${e._campus.id}')">${escapeHtml(e.name.length>16?e.name.slice(0,16)+'…':e.name)}</span>`;
+        }
+        if(dayEvents.length>3) html += `<span class="month-event" style="background:var(--ink-mute)">+${dayEvents.length-3}</span>`;
+        html += `</td>`; day++;
+      }
+      html += '</tr>';
+      if(day>last.getDate() && new Date(y,m,day).getMonth()!==m) break;
+    }
+    html += `</tbody></table></div>`;
+  }
+  html += `</div></div>`;
+  return html;
+}
+
+function renderTablePanel(events){
+  let html = `<div class="panel"><h2 class="panel-title">Tabel Kegiatan</h2><div class="panel-sub">Klik untuk edit.</div><div style="overflow-x:auto"><table class="data-table"><thead><tr><th style="width:95px">Mulai</th><th style="width:95px">Selesai</th><th>Nama</th><th style="width:120px">Unit</th><th style="width:110px">Jenis</th><th style="width:90px">Kampus</th><th style="width:60px"></th></tr></thead><tbody>`;
+  for(const ev of events){
+    html += `<tr>
+      <td><input type="date" value="${ymd(ev.start)}" onchange="updateEvent('${ev._campus.id}','${ev.id}','start',this.value)"></td>
+      <td><input type="date" value="${ymd(ev.end)}" onchange="updateEvent('${ev._campus.id}','${ev.id}','end',this.value)"></td>
+      <td><input type="text" value="${escapeHtml(ev.name)}" onchange="updateEvent('${ev._campus.id}','${ev.id}','name',this.value)"></td>
+      <td><input type="text" value="${escapeHtml(ev.unit)}" onchange="updateEvent('${ev._campus.id}','${ev.id}','unit',this.value)"></td>
+      <td><select onchange="updateEvent('${ev._campus.id}','${ev.id}','jenis',this.value)">
+        <option value="akademik" ${ev.jenis==='akademik'?'selected':''}>Akademik</option>
+        <option value="latih" ${ev.jenis==='latih'?'selected':''}>Pelatihan</option>
+        <option value="gap" ${ev.jenis==='gap'?'selected':''}>Gap</option></select></td>
+      <td><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${ev._campusColor}"></span>${escapeHtml(ev._campusName)}</span></td>
+      <td><button class="btn ghost small" onclick="deleteEvent('${ev._campus.id}','${ev.id}')">Hapus</button></td>
+    </tr>`;
+  }
+  html += `<tr><td colspan="7" style="padding:14px"><button class="btn small" onclick="addManualEvent()">+ Tambah Manual</button></td></tr>`;
+  html += `</tbody></table></div></div>`;
+  return html;
+}
+
+/* ----- REMINDER PANEL ----- */
+function getUpcoming(events, days){
+  const now = new Date(); now.setHours(0,0,0,0);
+  const limit = addDays(now, days);
+  return events.filter(e=>{
+    if(e.jenis === 'akademik') return false;
+    if(e.start < now) return false;
+    if(e.start > limit) return false;
+    return true;
+  }).sort((a,b)=>a.start-b.start);
+}
+
+function renderReminderPanel(events){
+  const upcoming = getUpcoming(events, 60);
+  let html = `<div class="panel">
+    <h2 class="panel-title">Pengingat & Notifikasi</h2>
+    <div class="panel-sub">Pelatihan dalam 60 hari ke depan. Klik <strong>Email Panitia</strong> untuk mengirim pengingat, atau <strong>Buka di Google Calendar</strong> untuk menambahkannya ke kalender pribadi Anda.</div>
+    ${upcoming.length ? renderReminderList(upcoming) : `<div class="reminder-empty">Tidak ada pelatihan dalam 60 hari. Generate pelatihan dulu.</div>`}
+    <div style="margin-top:18px;padding:14px;background:var(--surface-2);border-radius:var(--radius-sm);font-size:12px;color:var(--ink-soft)">
+      <strong>Cara kerja reminder email:</strong>
+      <ol style="margin:6px 0 0 18px;line-height:1.7">
+        <li><strong>Browser Notification</strong> — popup muncul di device Anda jika halaman terbuka saat pengingat jatuh tempo (perlu izin di sidebar).</li>
+        <li><strong>Email Panitia</strong> — buka mailto dengan subjek & isi terisi otomatis. Anda tinggal klik Kirim di aplikasi email Anda.</li>
+        <li><strong>Google Calendar</strong> — buka link "Tambah ke Google Calendar" untuk create event dengan notifikasi bawaan Google Calendar.</li>
+        <li><strong>.ics dengan VALARM</strong> — export file kalender dengan alarm bawaan. Import ke Outlook/Apple Calendar/Google dan akan bunyi otomatis.</li>
+        <li><strong>Apps Script (auto-email)</strong> — untuk auto-email terjadwal, copy-paste script di menu <em>Apps Script</em> ke Google Sheets/Apss Script Anda.</li>
+      </ol>
+    </div>
+  </div>`;
+  return html;
+}
+
+function renderReminderList(items){
+  const now = new Date(); now.setHours(0,0,0,0);
+  return items.map(ev=>{
+    const days = Math.ceil((ev.start - now)/(1000*60*60*24));
+    const cls = days <= 1 ? 'reminder-overdue' : (days <= 7 ? 'reminder-soon' : '');
+    return `<div class="reminder-card ${cls}">
+      <div class="when">
+        <strong>${days===0?'HARI INI':'H-'+days}</strong>
+        ${fmtDateId(ev.start)}
+      </div>
+      <div class="body">
+        <div class="name">${escapeHtml(ev.name)}</div>
+        <div class="meta">${ev.jenis==='latih'?'Pelatihan Inti':'Gap Training'} · ${escapeHtml(ev.unit)} · <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:${ev._campusColor}"></span>${escapeHtml(ev._campusName)}</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn copper small" onclick="emailEvent('${ev.id}','${ev._campus.id}')" title="Buka mailto dengan subjek dan isi terisi otomatis">✉ Email Panitia</button>
+        <button class="btn ghost small" onclick="gcalEvent('${ev.id}','${ev._campus.id}')" title="Buka di Google Calendar">📅 GCal</button>
+        <button class="btn ghost small" onclick="openEvent('${ev.id}','${ev._campus.id}')">Detail</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setView(v){ view=v; if(!combinedMode) renderMain(); }
+
+/* ----- EVENT MODAL ----- */
+function openEvent(id, campusId){
+  const c = state.campuses.find(x=>x.id===campusId); if(!c) return;
+  const ev = [...c.calendar, ...c.generated].find(e=>e.id===id); if(!ev) return;
+  modalTargetId = id; modalTargetCampus = c;
+  const offsets = ev.reminderOffsets || [];
+  document.getElementById('modalTitle').textContent = ev.name;
+  document.getElementById('modalBody').innerHTML = `
+    <table style="width:100%;font-size:13px">
+      <tr><td style="color:var(--ink-mute);padding:4px 0;width:130px">Kampus</td><td><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:${c.color}"></span>${escapeHtml(c.name)}</span></td></tr>
+      <tr><td style="color:var(--ink-mute);padding:4px 0">Mulai</td><td class="mono">${ymd(ev.start)}</td></tr>
+      <tr><td style="color:var(--ink-mute);padding:4px 0">Selesai</td><td class="mono">${ymd(ev.end)}</td></tr>
+      <tr><td style="color:var(--ink-mute);padding:4px 0">Durasi</td><td>${Math.floor((ev.end-ev.start)/(1000*60*60*24))+1} hari</td></tr>
+      <tr><td style="color:var(--ink-mute);padding:4px 0">Unit</td><td>${escapeHtml(ev.unit)}</td></tr>
+      <tr><td style="color:var(--ink-mute);padding:4px 0">Jenis</td><td><span class="pill ${ev.jenis}">${ev.jenis==='akademik'?'Akademik':ev.jenis==='latih'?'Pelatihan Inti':'Gap Training'}</span></td></tr>
+    </table>
+    ${ev.jenis!=='akademik' ? `
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)">
+      <div style="font-size:11px;color:var(--ink-mute);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px">Pengingat (hari sebelum)</div>
+      <div class="offset-pills" id="modalOffsetPills">
+        ${REMINDER_OFFSETS.map(o=>`<span class="offset-pill ${offsets.includes(o)?'active':''}" onclick="toggleOffset('${c.id}','${ev.id}',${o})">H-${o}</span>`).join('')}
+        ${offsets.filter(o=>!REMINDER_OFFSETS.includes(o)).map(o=>`<span class="offset-pill active" onclick="toggleOffset('${c.id}','${ev.id}',${o})">H-${o} ✕</span>`).join('')}
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn copper small" onclick="emailEvent('${ev.id}','${c.id}')">✉ Email Panitia</button>
+        <button class="btn ghost small" onclick="gcalEvent('${ev.id}','${c.id}')">📅 Google Calendar</button>
+      </div>
+    </div>
+    ` : ''}
+  `;
+  document.getElementById('modalDeleteBtn').style.display = '';
+  document.getElementById('modalBg').classList.add('open');
+}
+
+function toggleOffset(campusId, eventId, offset){
+  const c = state.campuses.find(x=>x.id===campusId); if(!c) return;
+  const ev = c.generated.find(e=>e.id===eventId); if(!ev) return;
+  ev.reminderOffsets = ev.reminderOffsets || [];
+  const idx = ev.reminderOffsets.indexOf(offset);
+  if(idx >= 0) ev.reminderOffsets.splice(idx,1);
+  else ev.reminderOffsets.push(offset);
+  ev.reminderOffsets.sort((a,b)=>b-a);
+  save();
+  openEvent(eventId, campusId); // re-render modal
+  scheduleAllNotifs();
+}
+
+function deleteFromModal(){ if(modalTargetId&&modalTargetCampus) deleteEvent(modalTargetCampus.id, modalTargetId); closeModal(); }
+function closeModal(){ document.getElementById('modalBg').classList.remove('open'); modalTargetId=null; modalTargetCampus=null; }
+
+function updateEvent(campusId, id, field, value){
+  const c = state.campuses.find(x=>x.id===campusId); if(!c) return;
+  let ev = c.calendar.find(e=>e.id===id) || c.generated.find(e=>e.id===id);
+  if(!ev) return;
+  if(field==='start' || field==='end'){ const d = parseDate(value); if(d) ev[field]=d; }
+  else ev[field] = value;
+  save(); renderMain(); scheduleAllNotifs();
+}
+
+function addManualEvent(){
+  const c = getActive(); if(!c) return;
+  c.calendar.push({id:uid(), name:'Kegiatan Baru', start:new Date(), end:new Date(), unit:'Umum'});
+  save(); renderMain();
+}
+
+function deleteEvent(campusId, id){
+  if(!confirm('Hapus kegiatan ini?')) return;
+  const c = state.campuses.find(x=>x.id===campusId); if(!c) return;
+  c.calendar = c.calendar.filter(e=>e.id!==id);
+  c.generated = c.generated.filter(e=>e.id!==id);
+  save(); renderMain(); scheduleAllNotifs();
+}
+
+/* ============================================================
+   NOTIFICATION ENGINE
+   ============================================================ */
+function renderNotifBadge(){
+  const badge = document.getElementById('notifBadge');
+  const text = document.getElementById('notifBadgeText');
+  if(state.notif.browserEnabled && 'Notification' in window && Notification.permission === 'granted'){
+    badge.classList.add('on'); text.textContent = 'Notifikasi Browser: ON';
+  } else {
+    badge.classList.remove('on'); text.textContent = 'Notifikasi Browser: Off — klik untuk aktifkan';
+  }
+}
+
+function toggleBrowserNotif(){
+  if(!('Notification' in window)){ alert('Browser Anda tidak mendukung notifikasi.'); return; }
+  if(Notification.permission === 'denied'){ alert('Notifikasi diblokir di browser. Aktifkan dari pengaturan browser.'); return; }
+  if(Notification.permission === 'granted'){
+    state.notif.browserEnabled = !state.notif.browserEnabled;
+    save(); renderNotifBadge();
+    if(state.notif.browserEnabled){ scheduleAllNotifs(); toast('Notifikasi browser diaktifkan.'); }
+    else { clearAllNotifs(); toast('Notifikasi browser dimatikan.'); }
+    return;
+  }
+  Notification.requestPermission().then(p=>{
+    if(p === 'granted'){
+      state.notif.browserEnabled = true;
+      save(); renderNotifBadge(); scheduleAllNotifs();
+      toast('Notifikasi browser diaktifkan.');
+    } else {
+      toast('Izin notifikasi ditolak.');
+    }
+  });
+}
+
+function clearAllNotifs(){
+  for(const s of scheduledNotifs){ clearTimeout(s.timeoutId); }
+  scheduledNotifs.length = 0;
+}
+
+function scheduleAllNotifs(){
+  clearAllNotifs();
+  if(!state.notif.browserEnabled) return;
+  if(!('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = Date.now();
+  const maxLookahead = 60 * 24 * 60 * 60 * 1000; // 60 days ahead
+  for(const c of state.campuses){
+    for(const ev of c.generated){
+      const offs = ev.reminderOffsets || state.notif.defaultOffsets || [1,3];
+      for(const off of offs){
+        const fireAt = new Date(ev.start); fireAt.setHours(9,0,0,0); // 9 AM on the reminder day
+        fireAt.setDate(fireAt.getDate() - off);
+        const delay = fireAt.getTime() - now;
+        if(delay <= 0) continue;
+        if(delay > maxLookahead) continue;
+        const tid = setTimeout(()=>{
+          showBrowserNotification(ev, c, off);
+        }, delay);
+        scheduledNotifs.push({timeoutId:tid, fireAt, event:ev});
+      }
+    }
+  }
+}
+
+function showBrowserNotification(ev, c, off){
+  try{
+    new Notification(`🔔 Pengingat H-${off}: ${ev.name}`, {
+      body: `${ev.name} — ${c.name}\n${fmtDateId(ev.start)}\nKlik untuk membuka Aldi Planner.`,
+      tag: ev.id + '-h' + off,
+      requireInteraction: false,
+    });
+  }catch(e){console.warn(e)}
+}
+
+/* ============================================================
+   EMAIL & CALENDAR ACTIONS
+   ============================================================ */
+function parseRecipients(text){
+  const out = [];
+  for(const line of text.split(/\r?\n/)){
+    const trimmed = line.trim();
+    if(!trimmed) continue;
+    const m = trimmed.match(/^(.+?)\s*<([^>]+)>$/);
+    if(m) out.push({name:m[1].trim(), email:m[2].trim()});
+    else if(/^\S+@\S+\.\S+$/.test(trimmed)) out.push({name:'', email:trimmed});
+  }
+  return out;
+}
+
+function emailEvent(eventId, campusId){
+  const c = state.campuses.find(x=>x.id===campusId); if(!c) return;
+  const ev = [...c.calendar, ...c.generated].find(e=>e.id===eventId); if(!ev) return;
+  const recipients = state.notif.recipients || [];
+  if(!recipients.length){
+    alert('Belum ada penerima email. Tambahkan di sidebar bagian "Penerima email default" lalu klik Simpan Pengaturan.');
+    return;
+  }
+  const to = recipients.map(r=>r.name?`${r.name} <${r.email}>`:r.email).join(', ');
+  const subject = `[${c.name}] Pengingat: ${ev.name}`;
+  const body = buildEmailBody(ev, c);
+  const mailto = `mailto:${escapeUrl(to)}?subject=${escapeUrl(subject)}&body=${escapeUrl(body)}`;
+  window.location.href = mailto;
+}
+
+function buildEmailBody(ev, c){
+  const offs = ev.reminderOffsets || state.notif.defaultOffsets || [1,3];
+  return `Yth. Panitia ${ev.unit},
+
+Kami informasikan bahwa pelatihan berikut akan dilaksanakan dalam beberapa hari ke depan. Mohon disiapkan segala sesuatunya:
+
+────────────────────────────────
+📌 Nama Kegiatan : ${ev.name}
+🏫 Kampus        : ${c.name}
+📅 Tanggal       : ${fmtDateId(ev.start)}${(ev.end-ev.start)/(1000*60*60*24)>=1 ? ' s.d. '+fmtDateId(ev.end):''}
+📦 Unit          : ${ev.unit}
+⏱️ Durasi        : ${Math.floor((ev.end-ev.start)/(1000*60*60*24))+1} hari
+────────────────────────────────
+
+Pengingat akan dikirim: ${offs.map(o=>'H-'+o).join(', ')} hari sebelum kegiatan.
+
+Mohon konfirmasi kesiapan melalui reply email ini.
+
+Terima kasih,
+Aldi Planner
+`;
+}
+
+function gcalEvent(eventId, campusId){
+  const c = state.campuses.find(x=>x.id===campusId); if(!c) return;
+  const ev = [...c.calendar, ...c.generated].find(e=>e.id===eventId); if(!ev) return;
+  const fmt = d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'').slice(0,15)+'Z';
+  const start = new Date(ev.start); start.setHours(9,0,0,0);
+  const end = new Date(ev.end); end.setHours(15,0,0,0);
+  const offs = ev.reminderOffsets || state.notif.defaultOffsets || [1,3];
+  const addAlarm = (days)=>`&add=${encodeURIComponent(JSON.stringify({method:'popup',minutes:days*24*60}))}`;
+  // google calendar only supports single alarm via popup; use the closest offset
+  const closest = Math.min(...offs);
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${escapeUrl('['+c.name+'] '+ev.name)}&dates=${fmt(start).slice(0,15)}Z/${fmt(end).slice(0,15)}Z&details=${escapeUrl(buildEmailBody(ev, c))}&location=${escapeUrl(c.name)}${addAlarm(closest)}`;
+  window.open(url, '_blank');
+}
+
+/* ============================================================
+   APPS SCRIPT — auto-email scheduled
+   ============================================================ */
+function openAppsScript(){
+  document.getElementById('modalTitle').textContent = 'Auto-Email via Google Apps Script';
+  document.getElementById('modalDeleteBtn').style.display = 'none';
+  const script = `// === Aldi Planner → Google Apps Script ===
+// Cara pakai:
+// 1. Buka https://script.google.com → New project
+// 2. Paste script ini di editor
+// 3. Ganti SHEET_ID dengan ID Google Sheet kosong Anda
+// 4. Setel trigger: jalankan \`checkReminders\` setiap jam (Edit → Triggers)
+// 5. Kirim semua .ics + schedule via upload JSON ke tab "data" di sheet
+
+function checkReminders() {
+  const ss = SpreadsheetApp.openById('SHEET_ID');
+  const sheet = ss.getSheetByName('data') || ss.insertSheet('data');
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows.shift();
+  const now = new Date();
+  const props = PropertiesService.getScriptProperties();
+  const sent = JSON.parse(props.getProperty('sent') || '{}');
+
+  for (const r of rows) {
+    const [name, campus, start, unit, offsets, recipients] = r;
+    const startDate = new Date(start);
+    if (isNaN(startDate)) continue;
+
+    const offArr = String(offset || off || offsets).split(',').map(Number).filter(Boolean);
+    for (const off of offArr) {
+      const fireAt = new Date(startDate);
+      fireAt.setDate(fireAt.getDate() - off);
+      fireAt.setHours(9, 0, 0, 0);
+
+      const key = name + '|' + start + '|h' + off;
+      if (sent[key]) continue;
+      if (Math.abs(fireAt - now) > 60 * 60 * 1000) continue; // window 1 jam
+
+      const to = String(recipients).split(/[,;]/).map(s => s.trim()).filter(Boolean);
+      const subject = '[' + campus + '] Pengingat H-' + off + ': ' + name;
+      const body = 'Yth. Panitia,\\n\\n' +
+        'Mengingatkan bahwa pelatihan berikut akan dilaksanakan:\\n\\n' +
+        '• Kegiatan: ' + name + '\\n' +
+        '• Kampus  : ' + campus + '\\n' +
+        '• Tanggal : ' + Utilities.formatDate(startDate, 'Asia/Jakarta', 'dd MMMM yyyy') + '\\n' +
+        '• Unit    : ' + unit + '\\n\\n' +
+        'Mohon disiapkan.\\n\\nAldi Planner';
+
+      GmailApp.sendEmail(to.join(','), subject, body);
+      sent[key] = now.toISOString();
+    }
+  }
+  props.setProperty('sent', JSON.stringify(sent));
+}
+`;
+  document.getElementById('modalBody').innerHTML = `
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:0">Karena aplikasi web murni tidak bisa mengirim email otomatis ke inbox orang lain (butuh server), gunakan Google Apps Script sebagai scheduler gratis:</p>
+    <ol style="font-size:13px;line-height:1.7;color:var(--ink-soft)">
+      <li>Buat Google Sheet baru dengan tab <code>data</code> dan kolom: <code>name, campus, start, unit, offsets, recipients</code></li>
+      <li>Ekspor CSV dari Aldi Planner, upload ke sheet tersebut</li>
+      <li>Buka <a href="https://script.google.com" target="_blank">script.google.com</a> → New project</li>
+      <li>Paste script di bawah, ganti <code>SHEET_ID</code></li>
+      <li>Tambahkan trigger: <strong>checkReminders</strong> → Time-driven → Every hour</li>
+      <li>Authorize Gmail — selesai. Email otomatis terkirim ke penerima pada H-x pukul 09:00.</li>
+    </ol>
+    <pre>${escapeHtml(script)}</pre>
+    <div class="row" style="margin-top:12px">
+      <button class="btn copper small" onclick="copyAppsScript()">📋 Salin Script</button>
+      <button class="btn ghost small" onclick="exportRemindersCSV()">⬇ Export CSV Reminder</button>
+    </div>
+  `;
+  window._aldiAppsScript = script;
+  document.getElementById('modalBg').classList.add('open');
+}
+
+function copyAppsScript(){
+  if(window._aldiAppsScript) navigator.clipboard.writeText(window._aldiAppsScript).then(()=>toast('Script disalin'));
+}
+
+function exportRemindersCSV(){
+  const rows = [['name','campus','start','unit','offsets','recipients']];
+  for(const c of state.campuses){
+    for(const e of c.generated){
+      if(e.jenis === 'akademik') continue;
+      const offs = (e.reminderOffsets || state.notif.defaultOffsets || [1,3]).join(',');
+      const recip = (state.notif.recipients||[]).map(r=>r.email).join(';');
+      rows.push([e.name, c.name, ymd(e.start), e.unit, offs, recip]);
+    }
+  }
+  if(rows.length === 1){ alert('Belum ada pelatihan.'); return; }
+  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'aldi-reminders.csv'; a.click();
+  toast('CSV reminder diunduh — upload ke Google Sheet untuk Apps Script.');
+}
+
+/* ============================================================
+   ICS EXPORT with VALARM
+   ============================================================ */
+function exportICS(){
+  let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Aldi Planner//ID\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\n';
+  for(const c of state.campuses){
+    const all = [...c.calendar, ...c.generated];
+    for(const e of all){
+      const dts = (d)=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'').slice(0,15)+'Z';
+      const localDts = (d)=>{ const z = (d.getTimezoneOffset()<0?'+':'-') + String(Math.abs(d.getTimezoneOffset()/60)).padStart(2,'0')+'00'; return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+String(d.getSeconds()).padStart(2,'0')+z; };
+      ics += 'BEGIN:VEVENT\n';
+      ics += 'UID:'+e.id+'@'+c.id+'.aldi-planner\n';
+      ics += 'DTSTAMP:'+dts(new Date())+'\n';
+      ics += 'DTSTART:'+localDts(new Date(e.start.getFullYear(),e.start.getMonth(),e.start.getDate(),9,0,0))+'\n';
+      ics += 'DTEND:'+localDts(new Date(e.end.getFullYear(),e.end.getMonth(),e.end.getDate(),15,0,0))+'\n';
+      ics += 'SUMMARY:'+escapeIcs('['+c.name+'] '+e.name)+'\n';
+      ics += 'DESCRIPTION:'+escapeIcs('Unit: '+e.unit+'\nJenis: '+e.jenis)+'\n';
+      ics += 'LOCATION:'+escapeIcs(c.name)+'\n';
+      ics += 'CATEGORIES:'+(e.jenis==='akademik'?'Akademik':e.jenis==='latih'?'Pelatihan':'Gap')+'\n';
+
+      // VALARM for trainings
+      if(e.jenis !== 'akademik'){
+        const offs = e.reminderOffsets || state.notif.defaultOffsets || [1,3];
+        for(const off of offs){
+          ics += 'BEGIN:VALARM\n';
+          ics += 'ACTION:DISPLAY\n';
+          ics += 'DESCRIPTION:'+escapeIcs('Pengingat H-'+off+': '+e.name)+'\n';
+          ics += 'TRIGGER:-P'+off+'D\n';
+          ics += 'END:VALARM\n';
+        }
+      }
+      ics += 'END:VEVENT\n';
+    }
+  }
+  ics += 'END:VCALENDAR';
+  const blob = new Blob([ics], {type:'text/calendar'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'aldi-planner.ics'; a.click();
+  toast('File .ics dengan VALARM diunduh. Import ke Google/Apple/Outlook Calendar.');
+}
+
+function exportJSON(){
+  const data = JSON.parse(JSON.stringify(state, (k,v)=>v instanceof Date ? v.toISOString() : v));
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'aldi-planner-'+ymd(new Date())+'.json'; a.click();
+}
+function importJSON(){ document.getElementById('fileInput').click(); }
+function handleImport(ev){
+  const file = ev.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = e => {
+    try{
+      const data = JSON.parse(e.target.result);
+      if(!data.campuses) throw new Error('File bukan dari Aldi Planner.');
+      state = {
+        campuses: data.campuses.map(c=>({
+          ...c,
+          calendar: c.calendar.map(x=>({...x, start:new Date(x.start), end:new Date(x.end)})),
+          generated: c.generated.map(x=>({...x, start:new Date(x.start), end:new Date(x.end)})),
+        })),
+        activeCampusId: data.activeCampusId || (data.campuses[0]?.id),
+        notif: data.notif || {defaultOffsets:[1,3,7],recipients:[],browserEnabled:false},
+      };
+      save(); renderAll(); scheduleAllNotifs();
+      toast('Berhasil import '+state.campuses.length+' kampus.');
+    }catch(err){ alert('File JSON tidak valid: '+err.message); }
+  };
+  r.readAsText(file);
+}
+function exportCSV(){
+  const rows = [['Kampus','Mulai','Selesai','Nama','Unit','Jenis','Pengingat']];
+  for(const c of state.campuses){
+    for(const e of c.calendar) rows.push([c.name, ymd(e.start), ymd(e.end), e.name, e.unit, 'akademik','']);
+    for(const e of c.generated) rows.push([c.name, ymd(e.start), ymd(e.end), e.name, e.unit, e.jenis, (e.reminderOffsets||[]).join(',')]);
+  }
+  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'aldi-planner.csv'; a.click();
+}
+function resetAll(){
+  if(!confirm('Hapus SEMUA kampus dan data?')) return;
+  state = {campuses:[], activeCampusId:null, notif:{defaultOffsets:[1,3,7],recipients:[],browserEnabled:false}};
+  save(); renderAll(); scheduleAllNotifs();
+}
+
+/* ============================================================
+   SYNC
+   ============================================================ */
+function openSync(){
+  document.getElementById('modalTitle').textContent = 'Sync Antar Perangkat';
+  document.getElementById('modalDeleteBtn').style.display = 'none';
+  const shareUrl = buildSyncUrl();
+  document.getElementById('modalBody').innerHTML = `
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:0">Aldi Planner adalah aplikasi web murni. Sync dilakukan via link terkompresi.</p>
+    <div style="background:var(--surface-2);padding:10px;border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:11px;word-break:break-all;max-height:120px;overflow-y:auto;border:1px solid var(--line)" id="syncLinkBox">${escapeHtml(shareUrl)}</div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn small" onclick="copySync()">📋 Salin Link</button>
+      <button class="btn ghost small" onclick="window.open('${shareUrl}','_blank')">🔗 Buka di Tab Baru</button>
+      <button class="btn ghost small" onclick="pasteSync()">📥 Tarik dari Link</button>
+    </div>`;
+  document.getElementById('modalBg').classList.add('open');
+}
+
+function buildSyncUrl(){
+  const data = JSON.parse(JSON.stringify(state, (k,v)=>v instanceof Date ? v.toISOString() : v));
+  const compressed = LZString.compressToEncodedURIComponent(JSON.stringify(data));
+  return `${location.href.split('?')[0].split('#')[0]}?sync=${compressed}`;
+}
+
+function copySync(){
+  const url = document.getElementById('syncLinkBox').textContent;
+  navigator.clipboard.writeText(url).then(()=>toast('Link disalin'));
+}
+
+function pasteSync(){
+  const url = prompt('Tempel link sync Aldi Planner:');
+  if(!url) return;
+  try{
+    const m = url.match(/[?&]sync=([^&]+)/);
+    if(!m) throw new Error('Link tidak valid.');
+    const json = LZString.decompressFromEncodedURIComponent(m[1]);
+    if(!json) throw new Error('Gagal dekompresi.');
+    const data = JSON.parse(json);
+    if(!data.campuses) throw new Error('Format data tidak valid.');
+    if(!confirm(`Ganti data lokal dengan ${data.campuses.length} kampus dari link?`)) return;
+    state = {
+      campuses: data.campuses.map(c=>({
+        ...c,
+        calendar: c.calendar.map(e=>({...e, start:new Date(e.start), end:new Date(e.end)})),
+        generated: c.generated.map(e=>({...e, start:new Date(e.start), end:new Date(e.end)})),
+      })),
+      activeCampusId: data.activeCampusId || (data.campuses[0]?.id),
+      notif: data.notif || {defaultOffsets:[1,3,7],recipients:[],browserEnabled:false},
+    };
+    save(); renderAll(); scheduleAllNotifs(); closeModal();
+    toast('Berhasil sync '+state.campuses.length+' kampus.');
+  }catch(e){ alert('Gagal sync: '+e.message); }
+}
+
+function checkSyncParam(){
+  const params = new URLSearchParams(location.search);
+  const sync = params.get('sync');
+  if(!sync) return false;
+  try{
+    const json = LZString.decompressFromEncodedURIComponent(sync);
+    if(!json) return false;
+    const data = JSON.parse(json);
+    if(!data.campuses) return false;
+    if(state.campuses.length && !confirm('Halaman ini berisi data sync dari '+data.campuses.length+' kampus. Ganti data lokal?')) return true;
+    state = {
+      campuses: data.campuses.map(c=>({
+        ...c,
+        calendar: c.calendar.map(e=>({...e, start:new Date(e.start), end:new Date(e.end)})),
+        generated: c.generated.map(e=>({...e, start:new Date(e.start), end:new Date(e.end)})),
+      })),
+      activeCampusId: data.activeCampusId || (data.campuses[0]?.id),
+      notif: data.notif || {defaultOffsets:[1,3,7],recipients:[],browserEnabled:false},
+    };
+    save(); renderAll(); scheduleAllNotifs();
+    toast('Berhasil sync '+state.campuses.length+' kampus dari link.');
+    history.replaceState(null, '', location.pathname);
+    return true;
+  }catch(e){console.warn('sync param invalid',e); return false; }
+}
+
+/* ============================================================
+   NOTIF SETTINGS UI
+   ============================================================ */
+function renderOffsetPills(){
+  const container = document.getElementById('offsetPills');
+  if(!container) return;
+  container.innerHTML = REMINDER_OFFSETS.map(o=>{
+    const active = (state.notif.defaultOffsets||[]).includes(o);
+    return `<span class="offset-pill ${active?'active':''}" onclick="toggleDefaultOffset(${o})">H-${o}</span>`;
+  }).join('');
+}
+
+function toggleDefaultOffset(o){
+  state.notif.defaultOffsets = state.notif.defaultOffsets || [];
+  const idx = state.notif.defaultOffsets.indexOf(o);
+  if(idx >= 0) state.notif.defaultOffsets.splice(idx,1);
+  else state.notif.defaultOffsets.push(o);
+  state.notif.defaultOffsets.sort((a,b)=>b-a);
+  save(); renderOffsetPills();
+}
+
+function saveNotifSettings(){
+  state.notif.recipients = parseRecipients(document.getElementById('recipientsArea').value);
+  save();
+  toast('Pengaturan disimpan. '+state.notif.recipients.length+' penerima email.');
+}
+
+/* ============================================================
+   PERSIST + INIT
+   ============================================================ */
+function save(){
+  try{
+    const data = JSON.parse(JSON.stringify(state, (k,v)=>v instanceof Date ? v.toISOString() : v));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }catch(e){console.warn('save failed',e)}
+}
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      state = {
+        campuses: (data.campuses||[]).map(c=>({
+          ...c,
+          calendar: c.calendar.map(e=>({...e,start:new Date(e.start),end:new Date(e.end)})),
+          generated: c.generated.map(e=>({...e,start:new Date(e.start),end:new Date(e.end)})),
+        })),
+        activeCampusId: data.activeCampusId || null,
+        notif: data.notif || {defaultOffsets:[1,3,7],recipients:[],browserEnabled:false},
+      };
+    }
+  }catch(e){console.warn(e)}
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._timer); t._timer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  load();
+  if(!checkSyncParam()){
+    if(!state.campuses.length){
+      addCampus('Kampus Utama', '#2D4A3E');
+      loadContoh();
+    }
+    renderAll();
+    scheduleAllNotifs();
+  } else {
+    renderAll();
+  }
+});
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
